@@ -44,7 +44,7 @@ class LinkedList {
     		current = current.prev;
     		indx--;
     	}
-    return;
+    return null;
     }
 
     insertAt(index, data) {
@@ -67,34 +67,52 @@ class LinkedList {
     }
 
     clear() {
+        this.length = 0;
     	this._head.data = null;
         this._tail.data = null;
-        this.length = 0;
+        return this;
     }
 
-    deleteAt(index) {    	
-    	var elem = this.at(index);
+    deleteAt(index) {   
 
-    	var current = this._head; 
- 		while(current.data !== elem) 
- 		{
-			 current = current.next; 
-			 if(current === null)
-			 return this; 
-		}
- 		if(current===this._head) 
- 			this._head= current.next; 
- 		else
-		 current.prev.next = current.next;
-		 if(current==this._tail) 
-		 this._tail = current.prev; 
-		 else
-		 current.next.prev = current.prev;
+        var previous = null;
+        var current = this._head;
+        var item = this.at(index);
 
-		this.length--;
-		return this;
+        while (current!==null) {
 
-    }
+            if (current.data===item) {
+
+                if (previous!==null) {
+                    previous.next = current.next;
+
+                    if (current.next===null) {
+                        this._tail = previous;
+                    }
+
+                    else {
+                        current.next.previous =  previous;
+                    }
+                    this.length--;
+                }
+
+                else {
+                        //RemoveFirst
+                }
+
+                return this;
+
+            }
+
+            previous = current;
+            current = current.next;
+
+        } 
+
+        return this;
+
+        }       
+
 
     reverse() {
     	var left = this._head; 
@@ -102,7 +120,7 @@ class LinkedList {
 
         while (true) {
             if (left == right) {
-                return;
+                return this;
             }
 
             var tmp = left.data;
@@ -110,7 +128,7 @@ class LinkedList {
             right.data = tmp;
 
             if (left.next == right) {
-                return;
+                return this;
             }
 
             left = left.next;
